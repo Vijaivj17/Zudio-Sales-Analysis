@@ -1,4 +1,5 @@
-![Uploading Screenshot 2026-06-30 155840.png…]()
+<img width="1284" height="719" alt="Screenshot 2026-06-30 155840" src="https://github.com/user-attachments/assets/d3f7a384-1472-49a5-b501-ee1362fe14ad" />
+
 # Zudio-Sales-Analysis
 Zudio Sales Analysis Dashboard is an interactive Power BI dashboard built to analyze retail sales performance using business intelligence techniques. The dashboard provides insights into sales, profit, product categories, store types, states, and customer trends through dynamic visualizations, KPI cards, maps, and charts. 
 # Zudio Sales Analysis Dashboard
