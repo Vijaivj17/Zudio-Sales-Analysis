@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zudio Sales Dashboard</title>
+  <meta name="description" content="Zudio Clothing Sales Analytics Dashboard — India Retail" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cambria:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3.1.0/dist/chartjs-chart-treemap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.3.3/build/index.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    window.addEventListener('error', function(e) {
+      document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:20px;">' + e.message + '<br>' + e.filename + ':' + e.lineno + '</div>';
+    });
+  </script>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       TOP ROW: Logo block + 4 KPI cards
+       ══════════════════════════════════════════════ -->
+  <div class="top-row">
+
+    <!-- Logo / Brand Block -->
+    <div class="brand-block">
+      <img src="zudio_logo.png" alt="Zudio" class="logo-img" />
+      <div class="brand-sub">Sales Analytics Dashboard</div>
+      <div class="brand-badge" id="dataStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Loading…</span>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-strip">
+
+      <div class="kpi-card">
+        <div class="kpi-header">Total Sales</div>
+        <div class="kpi-inset">
+          <div class="kpi-number" id="kpiSalesVal">—</div>
+          <div class="kpi-sublabel">Total Sales</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">Total Profit</div>
+        <div class="kpi-inset">
+          <div class="kpi-number" id="kpiProfitVal">—</div>
+          <div class="kpi-sublabel">Total Profit</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">Average Profit</div>
+        <div class="kpi-inset">
+          <div class="kpi-number" id="kpiAvgProfitVal">—</div>
+          <div class="kpi-sublabel">Average Profit</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">Total Quantity</div>
+        <div class="kpi-inset">
+          <div class="kpi-number" id="kpiQtyVal">—</div>
+          <div class="kpi-sublabel">Total Quantity</div>
+        </div>
+      </div>
+
+    </div><!-- /kpi-strip -->
+  </div><!-- /top-row -->
+
+  <!-- ══════════════════════════════════════════════
+       FILTER ROW: 3 slicer dropdowns
+       ══════════════════════════════════════════════ -->
+  <div class="filter-row">
+
+    <div class="filter-card" id="filter-state">
+      <div class="filter-label-header">State</div>
+      <div class="filter-select-wrap">
+        <select id="stateFilter" onchange="applyFilters()">
+          <option value="">All</option>
+        </select>
+        <span class="chevron">&#8964;</span>
+      </div>
+    </div>
+
+    <div class="filter-card" id="filter-cat">
+      <div class="filter-label-header">Category</div>
+      <div class="filter-select-wrap">
+        <select id="categoryFilter" onchange="applyFilters()">
+          <option value="">All</option>
+        </select>
+        <span class="chevron">&#8964;</span>
+      </div>
+    </div>
+
+    <div class="filter-card" id="filter-clothing">
+      <div class="filter-label-header">Clothing Type</div>
+      <div class="filter-select-wrap">
+        <select id="clothingFilter" onchange="applyFilters()">
+          <option value="">All</option>
+        </select>
+        <span class="chevron">&#8964;</span>
+      </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
+
+  </div><!-- /filter-row -->
+
+  <!-- ══════════════════════════════════════════════
+       CHART GRID: 2 rows × 3 columns
+       ══════════════════════════════════════════════ -->
+  <div class="chart-grid">
+
+    <!-- Row 1 -->
+    <div class="chart-card" id="card-state">
+      <div class="chart-card-title">Total Sales by State (Map)</div>
+      <div class="chart-body">
+        <canvas id="chartState"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card" id="card-category">
+      <div class="chart-card-title">Total Profit by Category</div>
+      <div class="chart-body donut-body">
+        <canvas id="chartCategory"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card" id="card-clothing">
+      <div class="chart-card-title">Total Sales by Clothing Type</div>
+      <div class="chart-body">
+        <canvas id="chartClothing"></canvas>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="chart-card" id="card-month">
+      <div class="chart-card-title">Total Sales by Month</div>
+      <div class="chart-body">
+        <canvas id="chartMonth"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card" id="card-statecity">
+      <div class="chart-card-title">Sales Breakdown by State &amp; City</div>
+      <div class="chart-body">
+        <canvas id="chartStateCity"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card" id="card-store">
+      <div class="chart-card-title">Total Sales by Store Type</div>
+      <div class="chart-body">
+        <canvas id="chartStore"></canvas>
+      </div>
+    </div>
+
+  </div><!-- /chart-grid -->
+
+  <!-- Footer -->
+  <footer class="footer-bar">
+    <span>Powered by Chart.js + PapaParse</span>
+  </footer>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loadingMsg">Parsing 7,899 rows…</div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+
+</html>

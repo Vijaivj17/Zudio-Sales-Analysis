@@ -1,0 +1,424 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ZUDIO SALES DASHBOARD — Exact Power BI palette replica
+   Sampled colours:
+     Page bg:         #B7A655  (warm mustard / gold)
+     Card bg:         #E8D166  (lighter gold)
+     KPI inset box:   #F0E199  (pale cream-gold)
+     KPI border:      #42332A  (charcoal-brown)
+     Header text:     #3A2E1F  (dark brown)
+     Number text:     #222222  (charcoal)
+     Green bars:      #51EC77
+     Donut navy:      #0D3B66
+     Donut blue:      #1565C0
+     Scatter: Kids=blue #1565C0, Men=navy #0D3B66, Women=coral #FF6B35
+     Store: Rented=#5CE1E1(cyan), Owned=#0D6ABF(deep blue)
+   ═══════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Google font fallback — Cambria is system only ── */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* ── Page chrome ── */
+  --page-bg:        #B7A655;
+  --card-bg:        #E8D166;
+  --card-border:    #9E8C30;
+  --card-radius:    10px;
+
+  /* ── KPI inset ── */
+  --inset-bg:       #F0E199;
+  --inset-border:   #42332A;
+
+  /* ── Text ── */
+  --text-header:    #3A2E1F;
+  --text-number:    #1A1200;
+  --text-label:     #4A3A10;
+  --text-muted:     #6B5A20;
+
+  /* ── Chart colours ── */
+  --green-bar:      #51EC77;
+  --green-bar-h:    #30D458;
+  --donut-navy:     #0D3B66;
+  --donut-blue:     #1565C0;
+  --scatter-kids:   #C9A8F0;   /* light purple */
+  --scatter-men:    #72C3F5;   /* light blue */
+  --scatter-women:  #FF9EC4;   /* light pink */
+  --store-rented:   #5CE1E1;
+  --store-owned:    #0D6ABF;
+
+  /* ── Fonts ── */
+  --font-serif:     'Libre Baskerville', 'Cambria', Georgia, serif;
+  --font-sans:      'Inter', 'Segoe UI', sans-serif;
+
+  /* ── Spacing ── */
+  --gap:            9px;
+  --pad:            12px 14px;
+}
+
+html, body {
+  font-family: var(--font-sans);
+  background: var(--page-bg);
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  color: var(--text-header);
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  /* Stack all sections vertically and fill the viewport */
+  flex: 1;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--page-bg); }
+::-webkit-scrollbar-thumb { background: #9E8C30; border-radius: 3px; }
+
+/* ══════════════════════════════════════════════════════
+   TOP ROW  —  Brand block + KPI strip
+   ══════════════════════════════════════════════════════ */
+.top-row {
+  display: flex;
+  gap: var(--gap);
+  padding: var(--gap) var(--gap) 0;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+/* ── Brand block ── */
+.brand-block {
+  flex: 0 0 160px;
+  background: #000000;
+  border: 2px solid #333333;
+  border-radius: var(--card-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.brand-sub {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.70);
+  letter-spacing: 0.5px;
+  text-align: center;
+  display: none;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  margin-top: 4px;
+  position: absolute;
+  bottom: 8px;
+}
+
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #FFD700;
+  display: inline-block;
+  animation: blink 1.2s ease-in-out infinite;
+}
+.status-dot.ready  { background: #51EC77; animation: none; }
+.status-dot.err    { background: #FF5252; animation: none; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+/* ── KPI strip ── */
+.kpi-strip {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+}
+
+/* ── KPI card outer shell ── */
+.kpi-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--card-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.kpi-header {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-header);
+  text-align: center;
+  padding: 7px 8px 5px;
+  background: var(--card-bg);
+  letter-spacing: 0.2px;
+}
+
+/* ── KPI inset "value box" — the pale cream box ── */
+.kpi-inset {
+  flex: 1;
+  margin: 0 10px 10px;
+  background: var(--inset-bg);
+  border: 1.5px solid var(--inset-border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  gap: 2px;
+}
+
+.kpi-number {
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text-number);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.kpi-sublabel {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-label);
+  text-align: center;
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* ══════════════════════════════════════════════════════
+   FILTER ROW
+   ══════════════════════════════════════════════════════ */
+.filter-row {
+  display: flex;
+  gap: var(--gap);
+  padding: var(--gap) var(--gap) 0;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+.filter-card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--card-radius);
+  padding: 7px 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter-label-header {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-header);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 2px;
+}
+
+.filter-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-select-wrap select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #FFFFFF;
+  border: 1px solid #bfab3a;
+  border-radius: 5px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-header);
+  padding: 5px 26px 5px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.filter-select-wrap select:hover,
+.filter-select-wrap select:focus {
+  border-color: var(--inset-border);
+  outline: none;
+}
+.filter-select-wrap select option {
+  background: #fff;
+  color: #222;
+}
+
+.chevron {
+  position: absolute;
+  right: 8px;
+  font-size: 14px;
+  color: var(--text-label);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.reset-btn {
+  flex: 0 0 80px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--inset-border);
+  border-radius: var(--card-radius);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-header);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  padding: 0 8px;
+}
+.reset-btn:hover {
+  background: #d4bc40;
+  transform: scale(1.02);
+}
+.reset-btn:active { transform: scale(0.98); }
+
+/* ══════════════════════════════════════════════════════
+   CHART GRID  —  2 rows × 3 columns
+   ══════════════════════════════════════════════════════ */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: var(--gap);
+  padding: var(--gap) var(--gap) 0;
+  flex: 1;
+  min-height: 0;
+}
+
+.chart-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--card-radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.chart-card-title {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-header);
+  text-align: center;
+  padding: 8px 12px 6px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--card-border);
+  letter-spacing: 0.1px;
+}
+
+.chart-body {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  padding: 8px 10px 6px;
+  /* subtle olive-gold plot-area tint */
+  background: #D4BE50;
+}
+/* Donut chart needs less padding to give canvas room for legend */
+.donut-body {
+  padding: 6px 8px;
+}
+
+.chart-body canvas {
+  display: block;
+  width: 100%  !important;
+  height: 100% !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════ */
+.footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px 8px;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   LOADING OVERLAY
+   ══════════════════════════════════════════════════════ */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(183, 166, 85, 0.93);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 44px; height: 44px;
+  border: 5px solid rgba(58,46,31,0.18);
+  border-top-color: var(--inset-border);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-header);
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .chart-grid      { grid-template-columns: repeat(2, 1fr); }
+  .kpi-strip       { grid-template-columns: repeat(2, 1fr); }
+  .brand-block     { flex: 0 0 130px; }
+  .logo-img        { max-width: 140px; }
+}
+
+@media (max-width: 700px) {
+  .top-row         { flex-direction: column; }
+  .brand-block     { flex: none; width: 100%; }
+  .kpi-strip       { grid-template-columns: repeat(2, 1fr); }
+  .filter-row      { flex-wrap: wrap; }
+  .filter-card     { flex: 1 1 calc(50% - var(--gap)); }
+  .chart-grid      { grid-template-columns: 1fr; }
+}
